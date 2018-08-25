@@ -37,9 +37,8 @@
                 <div id="menu2" class="nav-box menuhd">
                     <ul>
                         <li class="index">
-                            <a href="#" class="">
-                                <span class="out" style="top: 0px;">首页</span>
-                            </a>
+                           <router-link to="/index"> 
+                           <span class="out" style="top: 0px;">首页</span></router-link>
                         </li>
                         <li class="news">
                             <a href="#" class="">
@@ -62,7 +61,7 @@
                             </a>
                         </li>
                         <li class="goods">
-                            <a href="" class="router-link-exact-active ">
+                            <a href="" class="">
                                 <span class="out" style="top: 0px;">购物商城</span>
                             </a>
                         </li>
@@ -79,6 +78,8 @@
             </div>
         </div>
     </div>
+    <!-- 视口 -->
+  <router-view></router-view> 
  <div class="footer">
                 <div class="section">
                     <div class="foot-nav">
@@ -119,14 +120,42 @@
 </template>
 
 <script>
-
+//引入下载好的jquery
+import $ from 'jquery';
 
 export default {
-  name: 'app',
+  name: 'container',
   
 }
+//插件的动画,为a标签增加2个用于动画的span
+$(document).ready(function() {
+	$("#menu2 li a").wrapInner( '<span class="out"></span>' );
+	$("#menu2 li a").each(function() {
+		$( '<span class="over">' +  $(this).text() + '</span>' ).appendTo( this );
+	});
+
+	$("#menu2 li a").hover(function() {
+		$(".out",	this).stop().animate({'top':	'48px'},	300); // move down - hide
+		$(".over",	this).stop().animate({'top':	'0px'},		300); // move down - show
+
+	}, function() {
+		$(".out",	this).stop().animate({'top':	'0px'},		300); // move up - show
+		$(".over",	this).stop().animate({'top':	'-48px'},	300); // move up - hide
+	});
+
+});
 </script>
 
 <style>
+/* 引入样式 */
   @import url('./assets/statics/site/css/style.css');
+  /* 导入jqeury动画的样式 */
+  @import url('./assets/lib/css/style.css');
+  /* 将动画样式带来的背景图覆盖 */
+  #menu2 {
+    background-image: none;
+  }
+  body {
+    background-color: transparent;
+  }
 </style>
