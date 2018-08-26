@@ -59,7 +59,7 @@
                                 </div>
                                 <div class="txt-box">
                                     <a href="/goods/show-98.html">{{item.title}}</a>
-                                    <span>{{item.add_time | filtersTime}}</span>
+                                    <span>{{item.add_time |filtersTime}}</span>
                                 </div>
                             </li>
                            
@@ -83,8 +83,9 @@
                 <div class="wrap-box">
                     <ul class="img-list">
                         <li v-for="(itemdetail, index) in item.datas" :key="itemdetail.artID">
-                            <a href="#/site/goodsinfo/87" class="">
-                                <div class="img-box">
+                           
+                            <router-link :to="'/detail/'+itemdetail.artID">
+                              <div class="img-box">
                                     <img :src="itemdetail.img_url">
                                 </div>
                                 <div class="info">
@@ -98,7 +99,9 @@
                                         </span>
                                     </p>
                                 </div>
-                            </a>
+                            </router-link>
+                              
+                            
                         </li>
                       
                     </ul>
@@ -381,8 +384,7 @@
 <script>
 //导入axios发送ajax请求
 import axios from "axios";
-//导入moment，显示时间戳
-import moment from "moment";
+
 
 export default {
   //在vue插件中显示的名字
@@ -411,11 +413,6 @@ export default {
           
       })
   },
-  filters: {
-    filtersTime(value) {
-      return moment(value).format("YYYY年MM月DD日");
-    }
-  }
 };
 </script>
 <style>
