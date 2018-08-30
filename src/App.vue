@@ -1,4 +1,4 @@
-<template>
+ <template>
  <div>
    <div class="header">
         <!-- 1.0 导航栏头部 -->
@@ -10,23 +10,28 @@
                     <a target="_blank" href="#"></a>
                 </div>
                 <div id="menu" class="right-box">
-                    <span style="display: none;">
-                        <a href="" class="">登录</a>
+                    <span v-show="$store.state.islogin==false">
+                        <router-link to="/login">
+                            登录
+                        </router-link>
                         <strong>|</strong>
                         <a href="" class="">注册</a>
                         <strong>|</strong>
                     </span>
-                    <span>
+                    <span v-show="$store.state.islogin==true">
                         <a href="" class="">会员中心</a>
                         <strong>|</strong>
-                        <a>退出</a>
+                        <a @click="loginout">退出</a>
                         <strong>|</strong>
                     </span>
-                    <a href="" class="">
+                   <router-link to="/cart">
+                    <!-- <a href="" class=""> -->
                         <i class="iconfont icon-cart"></i>购物车(
                         <span id="shoppingCartCount">
-                            <span>4</span>
-                        </span>)</a>
+                            <span>{{$store.getters.goodsCounts}}</span>
+                        </span>)
+                        <!-- </a> -->
+                        </router-link>
                 </div>
             </div>
         </div>
@@ -116,15 +121,58 @@
  
  
  
+  <Modal v-model="isshow" width="360">
+      <p slot="header" style="color:#f60;text-align:center">
+        <Icon type="ios-information-circle"></Icon>
+        <span>你真的要离开?(╥╯^╰╥)</span>
+      </p>
+      <div style="text-align:center">
+        <p>登出了之后,只有重新登录才能够回来啦,你确定你记得密码?</p>
+      </div>
+      <div slot="footer" style="display:flex;justify-content: center">
+        <Button type="success" size="large"   @click="sureExit">确认</Button>
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        &nbsp;
+        <Button type="error" size="large"   @click="isShow=false">取消</Button>
+      </div>
+    </Modal>
+ 
  </div>
 </template>
 
 <script>
 //引入下载好的jquery
 import $ from 'jquery';
-
+import axios from 'axios';
 export default {
   name: 'container',
+  data:function(){
+      return{
+          isshow:false
+      }
+  },
+  methods:{
+      loginout(){
+          this.isshow=true;
+      },
+      sureExit() {
+          //点击登出，改变登录状态
+          this.isshow=false;
+            axios.get(`http://47.106.148.205:8899/site/account/logout`)
+            .then(response=>{
+                //判断是否成功登出
+               if(response.data.status==0) {
+                   //成功登出，改变登录状态
+                     this.$store.commit('changeLogin',false);
+                     this.$router.push('/login');
+               }
+            })
+
+      }
+  }
   
 }
 //插件的动画,为a标签增加2个用于动画的span

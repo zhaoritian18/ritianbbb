@@ -86,7 +86,8 @@
                            
                             <router-link :to="'/detail/'+itemdetail.artID">
                               <div class="img-box">
-                                    <img :src="itemdetail.img_url">
+                                    <!-- <img :src="itemdetail.img_url"> -->
+                                    <img v-lazy="itemdetail.img_url">
                                 </div>
                                 <div class="info">
                                     <h3>{{itemdetail.artTitle}}</h3>
